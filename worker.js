@@ -52,9 +52,19 @@ function insertionSort (array) {
 }
 
 onmessage = function (event) {
-    //insertionSort(event.data);
-    //selectionSort(event.data);
-    bubbleSort(event.data);
+    var args = event.data;
+
+    switch (args.algorithm) {
+    case 'bubble': 
+        bubbleSort(args.array);
+        break;
+    case 'selection': 
+        selectionSort(args.array);
+        break;
+    case 'insertion': 
+        insertionSort(args.array);
+        break;
+    }
 
     postMessage('done');
 }

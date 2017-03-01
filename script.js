@@ -33,21 +33,28 @@ function get (id) {
     return document.getElementById(id);
 }
 
-function startWorker (blocks) {
+function killWorker () {
+    worker.terminate();
+    worker = null;
+}
+
+function startWorker (blocks, algorithm) {
     worker = new Worker('worker.js');
 
     worker.onmessage = function (event) {
         var data = event.data;
 
         if (data === 'done') {
-            worker.terminate();
-            worker = null;
+            killWorker();
         } else {
             plot(data);
         }
     }
 
-    worker.postMessage(blocks);
+    worker.postMessage({
+        array: blocks,
+        algorithm: algorithm
+    });
 }
 
 function createBlocks () {
@@ -76,10 +83,11 @@ window.onload = function () {
 
 get('show').onclick = function () {
     if (worker) {
-        return;
+        killWorker();
     }
 
     blockSize = parseInt(get('inp-size').value);
+    var algorithm = get('opt-algorithm').value.split(' ')[0].toLowerCase();
 
     if (blockSize < 1 || blockSize > 15 || !blockSize) {
         alert('between 1 and 15');
@@ -93,5 +101,5 @@ get('show').onclick = function () {
 
     plot(blocks);
 
-    startWorker(blocks);
+    startWorker(blocks, algorithm);
 }
