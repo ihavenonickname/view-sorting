@@ -12,4 +12,5 @@ https://ihavenonickname.github.io/view-sorting/
 * [ ] Mark blocks being compared (doing)
 * [ ] Let user choose if comparisons are shown
 * [ ] Let user choose animation speed
+* [ ] Show statistics about sorting
 * [ ] Adjust layout for mobile devices
