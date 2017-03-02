@@ -1,0 +1,9 @@
+#input {
+    height: 50px;
+}
+
+#my-canvas {
+    margin: 0 auto;
+    display: block;
+    height: calc(100vh - 70px);
+}
