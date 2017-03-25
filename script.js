@@ -1,9 +1,11 @@
 var blockSize;
 var context;
 var worker;
-var changes = [];
+var futureUpdates = [];
 var showComparisons;
 var speed;
+var nComparisons = 0;
+var nSwaps = 0;
 
 // Knuth shuffle algorithm
 function shuffle (array) {
@@ -48,14 +50,22 @@ function killWorker () {
 }
 
 function pulling () {
-    if (changes.length == 0) {
+    if (futureUpdates.length == 0) {
         setTimeout(pulling, 100);
 
         return;
     }
 
-    var data = changes.shift();
+    var data = futureUpdates.shift();
     var isComparison = data.action === 'compare';
+
+    if (isComparison) {
+        nComparisons++;
+    } else {
+        nSwaps++;
+    }
+
+    updateStats();
 
     if (isComparison && !showComparisons) {
         setTimeout(pulling, 1);
@@ -73,14 +83,14 @@ function startWorker (blocks, algorithm) {
 
         switch (args.action) {
         case 'done':
-            changes.push(args);
+            futureUpdates.push(args);
             killWorker();
             break;
         case 'swap':
-            changes.push(args);
+            futureUpdates.push(args);
             break;
         case 'compare':
-            changes.push(args);
+            futureUpdates.push(args);
             break;
         default:
             console.log(JSON.stringify(args));
@@ -109,6 +119,11 @@ function get (id) {
     return document.getElementById(id);
 }
 
+function updateStats () {
+    get('stat-comparisons').innerHTML = nComparisons;
+    get('stat-swaps').innerHTML = nSwaps;
+}
+
 window.onload = function () {
     var canvas = get('my-canvas');
 
@@ -122,6 +137,8 @@ window.onload = function () {
 
     speed = parseInt(get('inp-speed').value);
     showComparisons = get('inp-comparisons').checked;
+
+    updateStats();
 
     pulling();
 }
@@ -141,7 +158,10 @@ get('show').onclick = function () {
 
     var algorithm = get('opt-algorithm').value.replace(' sort', '').toLowerCase();
 
-    changes = [];
+    nComparisons = 0;
+    nSwaps = 0;
+
+    futureUpdates = [];
 
     var blocks = createBlocks();
 
