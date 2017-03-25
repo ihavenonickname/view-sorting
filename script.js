@@ -2,6 +2,7 @@ var blockSize;
 var context;
 var worker;
 var changes = [];
+var showComparisons = false;
 
 // Knuth shuffle algorithm
 function shuffle (array) {
@@ -21,7 +22,7 @@ function shuffle (array) {
 
 function plot (array, specials) {
     context.clearRect(0, 0, context.width, context.height);
-    
+
     if (typeof(specials) === 'undefined') {
         specials = [];
     }
@@ -33,7 +34,7 @@ function plot (array, specials) {
         if (specials.indexOf(i) === -1) {
             context.fillStyle = '#000';
         } else {
-            context.fillStyle = '#FF0000';            
+            context.fillStyle = '#FF0000';
         }
 
         context.fillRect(x, y, blockSize, blockSize);
@@ -53,9 +54,14 @@ function pulling () {
     }
 
     var data = changes.shift();
-    plot(data.array, data.indexes);
+    var isComparison = data.action === 'compare';
 
-    setTimeout(pulling, data.indexes ? 100 : 10);
+    if (isComparison && !showComparisons) {
+        setTimeout(pulling, 10);
+    } else {
+        plot(data.array, data.indexes);
+        setTimeout(pulling, isComparison ? 100 : 10);
+    }
 }
 
 function startWorker (blocks, algorithm) {
@@ -104,7 +110,7 @@ function get (id) {
 
 window.onload = function () {
     var canvas = get('my-canvas');
-    
+
     canvas.height = canvas.scrollHeight;
     canvas.width = canvas.scrollHeight;
 
@@ -128,7 +134,7 @@ get('show').onclick = function () {
 
     if (blockSize < 3 || blockSize > 50 || !blockSize) {
         alert('between 3 and 50');
-        
+
         return;
     }
 
@@ -139,4 +145,8 @@ get('show').onclick = function () {
     plot(blocks);
 
     startWorker(blocks, algorithm);
+}
+
+get('chx-comparisons').onclick = function () {
+    showComparisons = !showComparisons;
 }
