@@ -2,7 +2,8 @@ var blockSize;
 var context;
 var worker;
 var changes = [];
-var showComparisons = false;
+var showComparisons;
+var speed;
 
 // Knuth shuffle algorithm
 function shuffle (array) {
@@ -57,10 +58,10 @@ function pulling () {
     var isComparison = data.action === 'compare';
 
     if (isComparison && !showComparisons) {
-        setTimeout(pulling, 10);
+        setTimeout(pulling, 1);
     } else {
         plot(data.array, data.indexes);
-        setTimeout(pulling, isComparison ? 100 : 10);
+        setTimeout(pulling, isComparison ? (speed * 10) : speed);
     }
 }
 
@@ -119,6 +120,9 @@ window.onload = function () {
     context.height = canvas.height;
     context.width = canvas.width;
 
+    speed = parseInt(get('inp-speed').value);
+    showComparisons = get('inp-comparisons').checked;
+
     pulling();
 }
 
@@ -127,16 +131,17 @@ get('show').onclick = function () {
         killWorker();
     }
 
-    changes = [];
-
     blockSize = parseInt(get('inp-size').value);
-    var algorithm = get('opt-algorithm').value.split(' ')[0].toLowerCase();
 
     if (blockSize < 3 || blockSize > 50 || !blockSize) {
-        alert('between 3 and 50');
+        alert('Block size between 3 and 50');
 
         return;
     }
+
+    var algorithm = get('opt-algorithm').value.replace(' sort', '').toLowerCase();
+
+    changes = [];
 
     var blocks = createBlocks();
 
@@ -147,6 +152,10 @@ get('show').onclick = function () {
     startWorker(blocks, algorithm);
 }
 
-get('chx-comparisons').onclick = function () {
-    showComparisons = !showComparisons;
+get('inp-comparisons').onclick = function () {
+    showComparisons = get('inp-comparisons').checked;
+}
+
+get('inp-speed').oninput = function () {
+    speed = parseInt(get('inp-speed').value);
 }
