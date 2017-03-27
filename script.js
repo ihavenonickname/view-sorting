@@ -84,7 +84,6 @@ function startWorker (blocks, algorithm) {
         switch (args.action) {
         case 'done':
             futureUpdates.push(args);
-            console.log(args.array);
             killWorker();
             break;
         case 'swap':

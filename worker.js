@@ -57,6 +57,32 @@ function insertionSort (array) {
     }
 }
 
+function cocktailSort(array) {
+    var i = 0;
+    var hasSwapped = false;
+
+    do {
+        hasSwapped = false;
+        var higherBound = array.length - i - 1;
+
+        for (var j = i; j < higherBound; j++) {
+            if (compare(array, j, j + 1)) {
+                hasSwapped = true;
+                swap(array, j, j + 1);
+            }
+        }
+
+        for (var j = higherBound; j >= i; j--) {
+            if (compare(array, j, j + 1)) {
+                hasSwapped = true;
+                swap(array, j, j + 1);
+            }
+        }
+
+        i++;
+    } while (hasSwapped);
+}
+
 onmessage = function (event) {
     var args = event.data;
 
@@ -70,7 +96,12 @@ onmessage = function (event) {
     case 'insertion':
         insertionSort(args.array);
         break;
+    case 'cocktail':
+        cocktailSort(args.array);
+        break;
     }
+
+    console.log('done');
 
     postMessage({
         action: 'done',
