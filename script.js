@@ -7,12 +7,12 @@ var speed;
 var nComparisons = 0;
 var nSwaps = 0;
 
+function randomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+}
+
 // Knuth shuffle algorithm
 function shuffle (array) {
-    function randomNumber(min, max) {
-        return Math.floor(Math.random() * (max - min) + min);
-    }
-
     for (var i = 0; i < array.length - 1; i++) {
         var randomIndex = randomNumber(i, array.length);
 
@@ -22,6 +22,18 @@ function shuffle (array) {
     }
 }
 
+function shuffleJustABit(array) {
+    var nIterations = Math.sqrt(array.length);
+
+    for (var i = 0; i < nIterations; i++) {
+        var a = randomNumber(i, array.length);
+        var b = randomNumber(i, array.length);
+
+        var temp = array[a];
+        array[a] = array[b];
+        array[b] = temp;
+    }
+}
 
 function plot (array, specials) {
     context.clearRect(0, 0, context.width, context.height);
@@ -167,7 +179,17 @@ get('start').onclick = function () {
 
     get('elements-count').innerHTML = blocks.length;
 
-    shuffle(blocks);
+    switch (get('initial-state').value.toLowerCase()) {
+    case 'random':
+        shuffle(blocks);
+        break;
+    case 'reversed':
+        blocks.reverse();
+        break;
+    case 'nearly sorted':
+        shuffleJustABit(blocks);
+        break;
+    }
 
     plot(blocks);
 

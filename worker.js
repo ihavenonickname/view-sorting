@@ -59,28 +59,31 @@ function insertionSort (array) {
 
 function cocktailSort(array) {
     var i = 0;
-    var hasSwapped = false;
 
-    do {
-        hasSwapped = false;
+    while (true) {
+        var swapped = false;
         var higherBound = array.length - i - 1;
 
         for (var j = i; j < higherBound; j++) {
             if (compare(array, j, j + 1)) {
-                hasSwapped = true;
+                swapped = true;
                 swap(array, j, j + 1);
             }
         }
 
         for (var j = higherBound; j >= i; j--) {
             if (compare(array, j, j + 1)) {
-                hasSwapped = true;
+                swapped = true;
                 swap(array, j, j + 1);
             }
         }
 
+        if (!swapped) {
+            return;
+        }
+
         i++;
-    } while (hasSwapped);
+    }
 }
 
 onmessage = function (event) {
@@ -100,8 +103,6 @@ onmessage = function (event) {
         cocktailSort(args.array);
         break;
     }
-
-    console.log('done');
 
     postMessage({
         action: 'done',
