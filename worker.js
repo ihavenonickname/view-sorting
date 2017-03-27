@@ -110,6 +110,23 @@ function combSort (array) {
     } while (!sorted);
 }
 
+function shellSort (array) {
+    function half (n) {
+        return Math.floor(n / 2);
+    }
+
+    for (var gap = half(array.length); gap > 0; gap = half(gap)) {
+        for (var i = gap; i < array.length; i++) {
+            var j = i;
+
+            while (j >= gap && compare(array, j - gap, j)) {
+                swap(array, j, j - gap);
+                j -= gap;
+            }
+        }
+    }
+}
+
 onmessage = function (event) {
     var args = event.data;
 
@@ -128,6 +145,9 @@ onmessage = function (event) {
         break;
     case 'comb':
         combSort(args.array);
+        break;
+    case 'shell':
+        shellSort(args.array);
         break;
     }
 
