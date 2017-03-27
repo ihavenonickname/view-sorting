@@ -1,9 +1,9 @@
-#input {
-    height: 50px;
-}
 
 #my-canvas {
-    margin: 0 auto;
+    height: calc(67vh);
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
     display: block;
-    height: calc(100vh - 70px);
 }

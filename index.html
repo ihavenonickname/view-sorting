@@ -3,44 +3,94 @@
 <title>View sorting</title>
 
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.0/css/bulma.min.css">
 
-<div id="input">
-    <label>Block size</label>
-    <input type="number" id="inp-size" />
 
-    |
+<div class="columns">
+    <div class="column is-one-quarter has-text-centered">
 
-    <select id="opt-algorithm">
-        <option>Bubble sort</option>
-        <option>Selection sort</option>
-        <option>Insertion sort</option>
-    </select>
+        <div class="tile is-parent is-vertical">
 
-    |
+            <article class="tile is-child box">
+                <p class="subtitle">Needs restart</p>
 
-    <label>Show comparisons</label>
-    <input type="checkbox" id="inp-comparisons" />
+                <p class="control">
+                    <label class="subtitle is-5">
+                        Block size
+                    </label>
+                    <input type="range" min="5" max="30" value="10" id="size" />
+                </p>
 
-    |
+                </br>
 
-    <label>Speed</label>
-    <input type="range" min="5" max="100" step="1" value="10" id="inp-speed" />
+                <p class="control">
+                    <span class="select">
+                        <select id="algorithm">
+                            <option>Selection sort</option>
+                            <option>Insertion sort</option>
+                            <option>Bubble sort</option>
+                        </select>
+                    </span>
+                </p>
+            </article>
 
-    |
+            <article class="tile is-child box">
+                <p class="subtitle">Change during execution</p>
 
-    <button id="show">Show it</button>
+                <p class="control">
+                    <label class="checkbox subtitle">
+                        <input type="checkbox" id="show-comparisons">
+                        Show comparisons
+                    </label>
+                </p>
 
-    <div id="stats">
-        <label>Comparisons: </label>
-        <label id="stat-comparisons">0</label>
-        <label>/</label>
-        <label>Swaps: </label>
-        <label id="stat-swaps">0</label>
-</div>
+                </br>
 
-<div id="canvas-parent">
-    <canvas id="my-canvas">
-    </canvas>
+                <p class="control">
+                    <label class="subtitle is-5">
+                        Speed
+                    </label>
+                    <input type="range" min="5" max="100" value="10" id="speed" />
+                </p>
+            </article>
+
+            <p class="control">
+                <button id="start" class="button is-large">Start</button>
+            </p>
+        </div>
+    </div>
+
+    <div class="column">
+        <div class="tile is-parent is-vertical">
+            <div class="tile is-child notification box">
+                <nav class="level is-mobile">
+                    <div class="level-item has-text-centered">
+                        <div>
+                            <p class="heading">Comparisons</p>
+                            <p id="comparisons" class="title">0</p>
+                        </div>
+                    </div>
+                    <div class="level-item has-text-centered">
+                        <div>
+                            <p class="heading">Swaps</p>
+                            <p id="swaps" class="title">0</p>
+                        </div>
+                    </div>
+                    <div class="level-item has-text-centered">
+                        <div>
+                            <p class="heading"># of elements</p>
+                            <p id="elements-count" class="title">0</p>
+                        </div>
+                    </div>
+                </nav>
+
+                <div class="tile is-child notification box">
+                    <canvas id="my-canvas" >
+                    </canvas>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="worker.js"></script>

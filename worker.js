@@ -19,7 +19,7 @@ function compare (array, i, j) {
     return array[i] > array[j];
 }
 
-function bubbleSort (array, history) {
+function bubbleSort (array) {
     for (var i = 0; i < array.length; i++) {
         for (var j = 0; j < array.length; j++) {
             if (compare(array, j, i)) {
@@ -29,7 +29,7 @@ function bubbleSort (array, history) {
     }
 }
 
-function selectionSort(array, history) {
+function selectionSort (array) {
     for (var i = 0; i < array.length - 1; i++) {
         var indexLowest = i;
 
@@ -46,7 +46,7 @@ function selectionSort(array, history) {
     }
 }
 
-function insertionSort (array, history) {
+function insertionSort (array) {
     for (var i = 1; i < array.length; i++) {
         var j = i;
 
@@ -61,13 +61,13 @@ onmessage = function (event) {
     var args = event.data;
 
     switch (args.algorithm) {
-    case 'bubble': 
+    case 'bubble':
         bubbleSort(args.array);
         break;
-    case 'selection': 
+    case 'selection':
         selectionSort(args.array);
         break;
-    case 'insertion': 
+    case 'insertion':
         insertionSort(args.array);
         break;
     }

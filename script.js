@@ -84,6 +84,7 @@ function startWorker (blocks, algorithm) {
         switch (args.action) {
         case 'done':
             futureUpdates.push(args);
+            console.log(args.array);
             killWorker();
             break;
         case 'swap':
@@ -120,8 +121,8 @@ function get (id) {
 }
 
 function updateStats () {
-    get('stat-comparisons').innerHTML = nComparisons;
-    get('stat-swaps').innerHTML = nSwaps;
+    get('comparisons').innerHTML = nComparisons;
+    get('swaps').innerHTML = nSwaps;
 }
 
 window.onload = function () {
@@ -135,20 +136,20 @@ window.onload = function () {
     context.height = canvas.height;
     context.width = canvas.width;
 
-    speed = parseInt(get('inp-speed').value);
-    showComparisons = get('inp-comparisons').checked;
+    speed = parseInt(get('speed').value);
+    showComparisons = get('show-comparisons').checked;
 
     updateStats();
 
     pulling();
 }
 
-get('show').onclick = function () {
+get('start').onclick = function () {
     if (worker) {
         killWorker();
     }
 
-    blockSize = parseInt(get('inp-size').value);
+    blockSize = parseInt(get('size').value);
 
     if (blockSize < 3 || blockSize > 50 || !blockSize) {
         alert('Block size between 3 and 50');
@@ -156,7 +157,7 @@ get('show').onclick = function () {
         return;
     }
 
-    var algorithm = get('opt-algorithm').value.replace(' sort', '').toLowerCase();
+    var algorithm = get('algorithm').value.replace(' sort', '').toLowerCase();
 
     nComparisons = 0;
     nSwaps = 0;
@@ -165,6 +166,8 @@ get('show').onclick = function () {
 
     var blocks = createBlocks();
 
+    get('elements-count').innerHTML = blocks.length;
+
     shuffle(blocks);
 
     plot(blocks);
@@ -172,10 +175,10 @@ get('show').onclick = function () {
     startWorker(blocks, algorithm);
 }
 
-get('inp-comparisons').onclick = function () {
-    showComparisons = get('inp-comparisons').checked;
+get('show-comparisons').onclick = function () {
+    showComparisons = get('show-comparisons').checked;
 }
 
-get('inp-speed').oninput = function () {
-    speed = parseInt(get('inp-speed').value);
+get('speed').oninput = function () {
+    speed = parseInt(get('speed').value);
 }
