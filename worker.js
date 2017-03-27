@@ -57,7 +57,7 @@ function insertionSort (array) {
     }
 }
 
-function cocktailSort(array) {
+function cocktailSort (array) {
     var i = 0;
 
     while (true) {
@@ -86,6 +86,30 @@ function cocktailSort(array) {
     }
 }
 
+function combSort (array) {
+    var gap = array.length;
+    var shrinkFactor = 1.3;
+    var sorted = false;
+
+    do {
+        gap = Math.floor(gap / shrinkFactor);
+
+        if (gap > 1) {
+            sorted = false;
+        } else {
+            gap = 1;
+            sorted = true;
+        }
+
+        for (var i = 0; i < array.length - gap; i++) {
+            if (compare(array, i, i + gap)) {
+                sorted = false;
+                swap(array, i, i + gap);
+            }
+        }
+    } while (!sorted);
+}
+
 onmessage = function (event) {
     var args = event.data;
 
@@ -101,6 +125,9 @@ onmessage = function (event) {
         break;
     case 'cocktail':
         cocktailSort(args.array);
+        break;
+    case 'comb':
+        combSort(args.array);
         break;
     }
 
