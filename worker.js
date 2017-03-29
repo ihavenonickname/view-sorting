@@ -21,27 +21,33 @@ function compare (array, i, j) {
 
 function bubbleSort (array) {
     for (var i = 0; i < array.length; i++) {
-        for (var j = 0; j < array.length; j++) {
-            if (compare(array, j, i)) {
-                swap(array, i, j);
+        var swapped = false;
+
+        for (var j = 0; j < array.length - 1; j++) {
+            if (compare(array, j, j + 1)) {
+                swap(array, j, j + 1);
+                swapped = true;
             }
+        }
+
+        if (!swapped) {
+            return;
         }
     }
 }
 
 function selectionSort (array) {
     for (var i = 0; i < array.length - 1; i++) {
-        var indexLowest = i;
+        var lowerBound = i;
 
         for (var j = i + 1; j < array.length; j++) {
-
-            if (compare(array, indexLowest, j)) {
-                indexLowest = j;
+            if (compare(array, lowerBound, j)) {
+                lowerBound = j;
             }
         }
 
-        if (indexLowest !== i) {
-            swap(array, i, indexLowest);
+        if (lowerBound !== i) {
+            swap(array, i, lowerBound);
         }
     }
 }

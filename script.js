@@ -3,7 +3,7 @@ var context;
 var worker;
 var futureUpdates = [];
 var showComparisons;
-var speed;
+var delay;
 var nComparisons = 0;
 var nSwaps = 0;
 
@@ -63,18 +63,22 @@ function killWorker () {
 
 function pulling () {
     if (futureUpdates.length == 0) {
-        setTimeout(pulling, 100);
+        setTimeout(pulling, 500);
 
         return;
     }
 
     var data = futureUpdates.shift();
-    var isComparison = data.action === 'compare';
+    var isComparison = false;
 
-    if (isComparison) {
+    switch (data.action) {
+    case 'compare':
         nComparisons++;
-    } else {
+        isComparison = true;
+        break;
+    case 'swap':
         nSwaps++;
+        break;
     }
 
     updateStats();
@@ -83,7 +87,7 @@ function pulling () {
         setTimeout(pulling, 1);
     } else {
         plot(data.array, data.indexes);
-        setTimeout(pulling, isComparison ? (speed * 10) : speed);
+        setTimeout(pulling, isComparison ? (delay * 10) : delay);
     }
 }
 
@@ -147,7 +151,7 @@ window.onload = function () {
     context.height = canvas.height;
     context.width = canvas.width;
 
-    speed = parseInt(get('speed').value);
+    delay = parseInt(get('delay').value);
     showComparisons = get('show-comparisons').checked;
 
     updateStats();
@@ -200,6 +204,6 @@ get('show-comparisons').onclick = function () {
     showComparisons = get('show-comparisons').checked;
 }
 
-get('speed').oninput = function () {
-    speed = parseInt(get('speed').value);
+get('delay').oninput = function () {
+    delay = parseInt(get('delay').value);
 }
