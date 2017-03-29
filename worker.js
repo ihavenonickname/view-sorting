@@ -133,6 +133,19 @@ function shellSort (array) {
     }
 }
 
+function gnomeSort (array) {
+    var i = 0;
+
+    while (i < array.length) {
+        if (i === 0 || compare(array, i, i - 1)) {
+            i++;
+        } else {
+            swap(array, i, i - 1);
+            i--;
+        }
+    }
+}
+
 onmessage = function (event) {
     var args = event.data;
 
@@ -154,6 +167,9 @@ onmessage = function (event) {
         break;
     case 'shell':
         shellSort(args.array);
+        break;
+    case 'gnome':
+        gnomeSort(args.array);
         break;
     }
 
