@@ -166,12 +166,6 @@ get('start').onclick = function () {
 
     blockSize = parseInt(get('size').value);
 
-    if (blockSize < 3 || blockSize > 50 || !blockSize) {
-        alert('Block size between 3 and 50');
-
-        return;
-    }
-
     var algorithm = get('algorithm').value.replace(' sort', '').toLowerCase();
 
     nComparisons = 0;
